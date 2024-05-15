@@ -94,7 +94,7 @@ if ($status == false) {
                     <dd><?= $resultCompany["company"] ?></dd>
                     <br>
                     <dt>郵便番号：</dt>
-                    <dd><?= '〒' . substr($resultCompany["postcode"], 0, 3) . "-" . substr($resultCompany["postcode"], 3); ?></dd>
+                    <dd><?= '〒' . substr($resultCompany["postcode"], 0, 3) . "-" . substr($resultCompany["postcode"], 3, 4); ?></dd>
                     <br>
                     <dt>住所：</dt>
                     <dd><?= $resultCompany["address"] ?></dd>
@@ -176,32 +176,7 @@ if ($status == false) {
     </main>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function() {
-            $(".top-btn").click(function() {
-                $("html, body").animate({
-                    scrollTop: 0
-                }, "normal");
-            });
-        });
-
-        //---モーダル---
-
-        // 「会社データ削除」リンクがクリックされたときの処理
-        $(".company-dlt").click(function(e) {
-            e.preventDefault(); // リンクのデフォルト動作をキャンセル
-
-            // モーダルを表示する
-            $("#my-modal").show();
-        });
-
-        // 「キャンセル」ボタンがクリックされたときの処理
-        $(".close-button, .cancel-btn").click(function() {
-            // モーダルを閉じる
-            $("#my-modal").hide();
-
-        });
-    </script>
+    <script src="JS/company.js"></script>
 </body>
 
 </html>

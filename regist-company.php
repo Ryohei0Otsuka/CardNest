@@ -40,11 +40,12 @@
                     <span class="error-message">会社名を入力してください</span>
                 </div>
                 <div class="input-container">
-                    <label for="postcode">郵便番号(ハイフンを除いて入力してください)</label><br>
+                    <label for="postcode">郵便番号(ハイフンを除いた7桁の数字を入力してください)</label><br>
                     <input type="text" name="postcode" class="input" id="postcode">
                     <span class="error-message">郵便番号を入力してください</span>
                     <span class="error-message2">ハイフンを除いて入力してください</span>
                     <span class="error-message3">半角数字のみを入力してください</span>
+                    <span class="error-message4">郵便番号を7桁で入力してください</span>
 
                 </div>
                 <div class="input-container">
@@ -66,71 +67,7 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function() {
-            $('.company-regist').on('submit', function(event) {
-                let formValid = true;
-
-                // 全ての入力フィールドをループしてバリデーションを行う
-                $('.company-regist input').each(function() {
-                    const errorMessage = $(this).next('.error-message');
-                    if ($(this).val() == '') {
-                        formValid = false;
-                        $(this).addClass('invalid');
-                        $(this).parent('.input-container').addClass('error');
-                        errorMessage.show();
-                    } else {
-                        $(this).removeClass('invalid');
-                        $(this).parent('.input-container').removeClass('error');
-                        errorMessage.hide();
-                    }
-                });
-
-                // 郵便番号のバリデーション
-                const postcode = $('#postcode').val();
-                const errorMessage2 = $('.error-message2');
-                const errorMessage3 = $('.error-message3');
-
-                if (postcode == '') {
-                    formValid = false;
-                    $('#postcode').addClass('invalid');
-                    $('#postcode').parent('.input-container').addClass('error');
-                    errorMessage2.hide();
-                    errorMessage3.hide();
-                } else if (postcode.includes('-') && /[^0-9-]/.test(postcode)) {
-                    formValid = false;
-                    $('#postcode').addClass('invalid');
-                    $('#postcode').parent('.input-container').addClass('error');
-                    errorMessage2.show().addClass('active');
-                    errorMessage3.show().addClass('active');
-                } else if (/[^0-9-]/.test(postcode)) {
-                    formValid = false;
-                    $('#postcode').addClass('invalid');
-                    $('#postcode').parent('.input-container').addClass('error');
-                    errorMessage3.show().removeClass('active');
-                    errorMessage2.hide();
-                } else if (postcode.includes('-')) {
-                    formValid = false;
-                    $('#postcode').addClass('invalid');
-                    $('#postcode').parent('.input-container').addClass('error');
-                    errorMessage2.show().removeClass('active');
-                    errorMessage3.hide();
-                } else {
-                    $('#postcode').removeClass('invalid');
-                    $('#postcode').parent('.input-container').removeClass('error');
-                    errorMessage2.hide().removeClass('active');
-                    errorMessage3.hide().removeClass('active');
-                }
-
-
-
-                // フォーム送信時にのみバリデーションを行う
-                if (!formValid) {
-                    event.preventDefault(); // フォーム送信をキャンセル
-                }
-            });
-        });
-    </script>
+    <script src="JS/regist-company.js"></script>
 </body>
 
 </html>

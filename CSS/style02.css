@@ -14,6 +14,8 @@ html {
     display: flex;
     align-items: center;
     height: 100px;
+    width: 1200px;
+    margin: 0 auto;
 }
 
 .top-link {
@@ -117,7 +119,8 @@ img {
 .error-message,
 .error-message2,
 .error-message3,
-.error-message4 {
+.error-message4,
+.error-message5 {
     color: red;
     font-size: 18px;
     display: none;

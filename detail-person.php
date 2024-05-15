@@ -69,6 +69,7 @@ if ($status == false) {
                     <input type="tel" name="tel" class="input2" id="tel" value="<?= $result["tel"] ?>">
                     <span class="error-message2">ハイフンは除いて入力してください</span>
                     <span class="error-message3">半角数字のみを入力してください</span>
+                    <span class="error-message5">15桁以内で入力してください</span>
                 </div>
                 <div class="input-container">
                     <label for="mail">メールアドレス(任意)</label><br>
@@ -91,91 +92,7 @@ if ($status == false) {
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function() {
-            $('.person-edit').on('submit', function(event) {
-                let formValid = true;
-
-                // 全ての入力フィールドをループしてバリデーションを行う
-                $('.input').each(function() {
-                    const errorMessage = $(this).next('.error-message');
-                    if ($(this).val() == '') {
-                        formValid = false;
-                        $(this).addClass('invalid');
-                        $(this).parent('.input-container').addClass('error');
-                        errorMessage.show();
-                    } else {
-                        $(this).removeClass('invalid');
-                        $(this).parent('.input-container').removeClass('error');
-                        errorMessage.hide();
-                    }
-                });
-
-                // 電話番号のバリデーション
-                const telNumber = $('#tel').val();
-                const errorMessage2 = $('.error-message2');
-                const errorMessage3 = $('.error-message3');
-
-                if (telNumber !== '') {
-                    if (telNumber.includes('-') && /[^0-9-]/.test(telNumber)) {
-                        formValid = false;
-                        $('#tel').addClass('invalid');
-                        $('#tel').parent('.input-container').addClass('error');
-                        errorMessage2.show().addClass('active');
-                        errorMessage3.show().addClass('active');
-                    } else if (telNumber.includes('-')) {
-                        formValid = false;
-                        $('#tel').addClass('invalid');
-                        $('#tel').parent('.input-container').addClass('error');
-                        errorMessage2.show().removeClass('active');
-                        errorMessage3.hide();
-                    } else if (/[^0-9-]/.test(telNumber)) {
-                        formValid = false;
-                        $('#tel').addClass('invalid');
-                        $('#tel').parent('.input-container').addClass('error');
-                        errorMessage3.show().removeClass('active');
-                        errorMessage2.hide();
-                    } else {
-                        $('#tel').removeClass('invalid');
-                        $('#tel').parent('.input-container').removeClass('error');
-                        errorMessage2.hide();
-                        errorMessage3.hide();
-                    }
-                } else {
-                    $('#tel').removeClass('invalid');
-                    $('#tel').parent('.input-container').removeClass('error');
-                    errorMessage2.hide();
-                    errorMessage3.hide();
-                }
-
-                // メールアドレスのバリデーション
-                const email = $('#mail').val();
-                const errorMessage4 = $('.error-message4');
-
-                if (email !== '') {
-                    if (!email.includes('@')) {
-                        formValid = false;
-                        $('#mail').addClass('invalid');
-                        $('#mail').parent('.input-container').addClass('error');
-                        errorMessage4.show();
-                    } else {
-                        $('#mail').removeClass('invalid');
-                        $('#mail').parent('.input-container').removeClass('error');
-                        errorMessage4.hide();
-                    }
-                } else {
-                    $('#mail').removeClass('invalid');
-                    $('#mail').parent('.input-container').removeClass('error');
-                    errorMessage4.hide();
-                }
-
-                // フォーム送信時にのみバリデーションを行う
-                if (!formValid) {
-                    event.preventDefault(); // フォーム送信をキャンセル
-                }
-            });
-        });
-    </script>
+    <script src="JS/detail-person.js"></script>
 </body>
 
 </html>

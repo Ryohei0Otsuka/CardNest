@@ -1,32 +1,37 @@
 <?php
-// funcs.php をインクルードして PDO インスタンスを取得
 include "funcs.php";
 $pdo = db_con();
 
 // ページング用のパラメータを取得
-$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$page = isset($_GET["page"]) ? intval($_GET["page"]) : 1; // 現在のページ番号（デフォルトは1）
 $perPage = 10; // 1ページあたりのリスト数
+$numArrows = 2; // 前後に表示する矢印の数
 
-if (isset($_GET['search']) && !empty($_GET['search'])) {
-    $searchKeyword = '%'.h($_GET['search']).'%';
+$search = isset($_GET["search"]) ? '%' . h(space($_GET["search"])) . '%' : '';
+
+// 検索フォームに入力があるかどうかでクエリを分岐
+if (!empty($search)) {
+    // 入力がある場合は検索結果の件数を取得
+    $stmtCount = $pdo->prepare("SELECT COUNT(*) FROM cardnest_company WHERE company LIKE :keyword");
+    $stmtCount->bindValue(':keyword', $search, PDO::PARAM_STR);
+    $stmtCount->execute();
+    $totalRows = $stmtCount->fetchColumn();
+
+    // 検索結果を取得
+    $query = "SELECT * FROM cardnest_company WHERE company LIKE :keyword LIMIT :offset, :perPage";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindValue(':keyword', $search, PDO::PARAM_STR);
+    $stmt->bindValue(':offset', ($page - 1) * $perPage, PDO::PARAM_INT);
+    $stmt->bindValue(':perPage', $perPage, PDO::PARAM_INT);
 } else {
-    $searchKeyword = '';
-}
+    // 入力がない場合は全件数を取得
+    $totalRows = $pdo->query("SELECT COUNT(*) FROM cardnest_company")->fetchColumn();
 
-// 全体のリスト数を初期化
-$totalRows = 0;
-
-$query = "SELECT * FROM cardnest_company";
-if (!empty($searchKeyword)) {
-    $query .= " WHERE company LIKE :keyword";
-}
-
-
-$stmt = $pdo->prepare("$query LIMIT :offset, :perPage");
-$stmt->bindValue(':offset', ($page - 1) * $perPage, PDO::PARAM_INT);
-$stmt->bindValue(':perPage', $perPage, PDO::PARAM_INT); 
-if (!empty($searchKeyword)) {
-    $stmt->bindValue(':keyword', $searchKeyword, PDO::PARAM_STR);
+    // 全データを取得
+    $query = "SELECT * FROM cardnest_company LIMIT :offset, :perPage";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindValue(':offset', ($page - 1) * $perPage, PDO::PARAM_INT);
+    $stmt->bindValue(':perPage', $perPage, PDO::PARAM_INT);
 }
 
 $stmt->execute();
@@ -35,12 +40,13 @@ $company = '';
 
 while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $company .= '<li>';
-    $company .= '<a href="company.php?id='.$result["id"].'">';
+    $company .= '<a href="company.php?id=' . $result["id"] . '">';
     $company .= $result["company"];
     $company .= '</a>';
     $company .= '</li>';
 }
 ?>
+
 
 
 

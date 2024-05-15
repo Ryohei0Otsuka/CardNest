@@ -1,6 +1,7 @@
 <?php
 $company      = $_POST["company"];
 $postcode     = $_POST["postcode"];
+$postcode     = substr($postcode, 0, 7);
 $address      = $_POST["address"];
 $registeredBy = $_POST["registeredBy"];
 $id           = $_POST["id"];
